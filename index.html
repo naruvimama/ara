@@ -12,7 +12,7 @@
       var recognition = new webkitSpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = "en-US"; 
+      recognition.lang = "en-IN"; 
       recognition.maxAlternatives = 3;
 
       recognition.onstart = function() {
@@ -22,8 +22,6 @@
       };
 
       function startButton(event) {
-        final_transcript = '';
-        recognition.lang = 'en-IN';
         recognition.start();
         start_img.src = 'https://speechlogger.appspot.com/images/micslash2.png';
       }
@@ -41,11 +39,13 @@
         }
 
         for (var i = event.resultIndex; i < event.results.length; ++i) {      
-          if (event.results[i].isFinal) { //Final results
+          if (event.results[i].isFinal) { 
+            // Final results
             console.log("final results: " + event.results[i][0].transcript);
           } 
           else {
-            console.log("interim results: " + event.results[i][0].transcript);  //You can use these results to give the user near real time experience.
+            // You can use these results to give the user near real time experience.
+            console.log("interim results: " + event.results[i][0].transcript);
           } 
         }
       }; 
