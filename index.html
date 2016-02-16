@@ -2,57 +2,13 @@
 <html>
 <head>
   <meta http-equiv='Content-Language' content='en'/>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' data: chrome-extension-resource:; object-src 'none'; child-src 'none'"> 
   <title></title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-  <script type="text/javascript">
-    if (!('webkitSpeechRecognition' in window)) {
-      alert('Speech API not supported in your browser. Please upgrade to latest version.');
-    }
-    else {
-      var recognition = new webkitSpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = "en-IN"; 
-      recognition.maxAlternatives = 3;
-
-      recognition.onstart = function() {
-        // Listening (capturing voice from audio input) started.
-        // This is a good place to give the user visual feedback about that (i.e. flash a red light, etc.)
-        console.log('started');
-      };
-
-      function startButton(event) {
-        recognition.start();
-        start_img.src = 'https://speechlogger.appspot.com/images/micslash2.png';
-      }
-
-      recognition.onend = function() {
-        // If you wish to achieve continuous recognition – you can write a script to start the recognizer again here.
-        console.log('ended');
-        recognition.start();
-      };
-
-      recognition.onresult = function(event) {
-        if (typeof(event.results) === 'undefined') {
-          recognition.stop();
-          return;
-        }
-
-        for (var i = event.resultIndex; i < event.results.length; ++i) {      
-          if (event.results[i].isFinal) { 
-            // Final results
-            console.log("final results: " + event.results[i][0].transcript);
-          } 
-          else {
-            // You can use these results to give the user near real time experience.
-            console.log("interim results: " + event.results[i][0].transcript);
-          } 
-        }
-      }; 
-    }
-  </script>
 </head>
 <body>
-<div onclick="startButton(event);"><img alt="Start" id="start_img" src="https://speechlogger.appspot.com/images/micoff2.png"></div> 
+<div><img alt="Start" id="start_img" src="calculator-128.png"></div> 
+<p id="result"></p>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="main.js"></script>
 </body>
 </html>
