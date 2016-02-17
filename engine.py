@@ -42,7 +42,8 @@ def process_cmd():
     if (cmd_split[0] == 'heera') or (cmd_split[0] == 'veera')\
       or (cmd_split[0] == 'error') or (cmd_split[0] == 'ara')\
       or (cmd_split[0] == 'aura') or (cmd_split[0] == 'horror')\
-      or (cmd_split[0] == 'arav') or (cmd_split[0] == 'aarav'):
+      or (cmd_split[0] == 'arav') or (cmd_split[0] == 'aarav')\
+      or (cmd_split[0] == 'tera'):
       # Call its name
 
       os.system('say -v samantha "' + random.choice(hello_msgs) + '"')
@@ -113,10 +114,32 @@ def process_cmd():
         else:
           os.system('brightness ' + brightness[1:])
 
+    
     elif (cmd_split[0] == 'how') or (cmd_split[0] == 'who'):
       # Generic questions, ask google.
 
       ask_google(cmd)
+
+
+    elif cmd_split[0] == 'play':
+      # Play movie or music.
+
+      if cmd_split[1] == 'itunes':
+        os.system('say -v samantha "Sure"')
+        os.system(""" osascript -e 'tell application "iTunes" to play' """)
+
+      else:
+        play_cmd = cmd_split
+        play_cmd.pop(0)
+
+        os.system('osascript -e')
+
+
+    elif (cmd_split[0] == 'pause') or (cmd_split[0] == 'stop'):
+      # Pause movie or music.
+
+      os.system(""" osascript -e 'tell application "iTunes" to pause' """)
+      
     
     return 'success'
   else:
