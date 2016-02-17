@@ -29,6 +29,7 @@
         // If you wish to achieve continuous recognition – you can write a script to start the recognizer again here.
         console.log('ended');
         recognition.stop();
+        $('#start_img').click();
       };
 
       recognition.onerror = function(event) { 
@@ -56,3 +57,28 @@
         }
       }; 
     }
+
+    /*var xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://developer.chrome.com/static/images/chrome-logo_2x.png', true);
+xhr.responseType = 'blob';
+xhr.onload = function(e) {
+  var img = document.createElement('img');
+  img.src = window.URL.createObjectURL(this.response);
+  document.body.appendChild(img);
+};
+xhr.send();*/
+
+/*$.ajax({
+    type: "GET",
+    url: 'https://developer.chrome.com/static/images/chrome-logo_2x.png',
+    dataType: 'binary',
+    headers:{'Content-Type':'image/png','X-Requested-With':'XMLHttpRequest'},
+    processData: false,
+    error: function(e) {
+      console.log(e.responseText);
+    },
+    success: function (data) {
+      console.log(data);
+        $('body').append('<img src="'+data+'">');
+      }
+ });*/
