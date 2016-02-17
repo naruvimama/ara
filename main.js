@@ -35,7 +35,7 @@
       recognition.onerror = function(event) { 
         console.log(event);
         recognition.stop();
-       }
+      }
 
       recognition.onresult = function(event) {
         if (typeof(event.results) === 'undefined') {
@@ -48,14 +48,37 @@
             // Final results
             console.log("final results: " + event.results[i][0].transcript);
             $('#result').text(event.results[i][0].transcript);
+            talkToBackend(event.results[i][0].transcript.toLowerCase());
           } 
+          // else if((event.results[i][0].transcript.toLowerCase() == 'heera') || (event.results[i][0].transcript.toLowerCase() == 'veera') || (event.results[i][0].transcript.toLowerCase() == 'error') || (event.results[i][0].transcript.toLowerCase() == 'ara') || (event.results[i][0].transcript.toLowerCase() == 'aura') || (event.results[i][0].transcript.toLowerCase() == 'horror')) {
+          //   console.log('calling ara');
+          //   talkToBackend(event.results[i][0].transcript.toLowerCase());
+          //   break;
+          // }
           else {
             // You can use these results to give the user near real time experience.
             console.log("interim results: " + event.results[i][0].transcript);
             $('#result').text(event.results[i][0].transcript);
           } 
         }
-      }; 
+      }
+
+      var talkToBackend = function(cmd) {
+        console.log({'cmd':cmd});
+        $.ajax({
+          type: "POST",
+          url: 'http://127.0.0.1:5000/',
+          data: JSON.stringify({'cmd': cmd}),
+          dataType: 'json',
+          contentType: "application/json; charset=utf-8",
+          error: function(e) {
+            console.log(e.responseText);
+          },
+          success: function (data) {
+            console.log(data);
+          }
+        });
+      }
     }
 
     /*var xhr = new XMLHttpRequest();
@@ -68,17 +91,4 @@ xhr.onload = function(e) {
 };
 xhr.send();*/
 
-/*$.ajax({
-    type: "GET",
-    url: 'https://developer.chrome.com/static/images/chrome-logo_2x.png',
-    dataType: 'binary',
-    headers:{'Content-Type':'image/png','X-Requested-With':'XMLHttpRequest'},
-    processData: false,
-    error: function(e) {
-      console.log(e.responseText);
-    },
-    success: function (data) {
-      console.log(data);
-        $('body').append('<img src="'+data+'">');
-      }
- });*/
+
