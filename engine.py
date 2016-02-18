@@ -17,58 +17,43 @@ hello_msgs = ['hi', 'hey', 'yup', 'yes', 'hello', 'yes boss']
 
 cors = CORS(app, resources={r"/": {"origins": "localhost"}})
 
-
 def ask_google(cmd):
-  os.system('say -v samantha "Asking Google"')
-  search_string = urllib2.quote(cmd)
-  os.system('open "http://google.com/search?q=' + search_string + '"')
+    os.system('say -v samantha "Asking Google"')
+    search_string = urllib2.quote(cmd)
+    os.system('open "http://google.com/search?q=' + search_string + '"')
 
-@app.route("/", methods=['POST'])
-def process_cmd():
-  
-  if request.method == 'POST':
-    
-    # Get the command.
-    get_cmd = request.get_data()
-    
-    cmd = json.loads(get_cmd)['cmd'].strip()
-    print cmd
-    
-    cmd_split = cmd.split(' ')
-    print cmd_split
-
-    
+def __process_command__(cmd_split):
     if cmd_split[0] in ['heera', 'veera', 'error', 'ara',\
                         'aura', 'horror', 'arav', 'aarav',\
                         'tera']:
       # Call its name
       os.system('say -v samantha "' + random.choice(hello_msgs) + '"')
 
-    
+
     elif cmd_split[0] == 'open':
       # Open something.
 
       name = cmd_split[1]
       name_split = name.split('.')
       os.system('say -v samantha "Opening ' + name + '"')
-      
-      
+
+
       if len(name_split) == 1:
         # Open OSX Application.
-  
+
         path = os.popen('mdfind ' + name + ' kind:application').read()
         print path
-      
+
         os.system('open -a ' + path)
-      
-      
+
+
       else:
         # Open a webpage in a default browser.
 
         url = 'http://' + name_split[0] + '.' + name_split[1]
         os.system('open ' + url)
-    
-    
+
+
     elif cmd_split[0] == 'what':
       # Open Dictionary for the meaning of a given word.
 
@@ -81,7 +66,7 @@ def process_cmd():
         word = cmd_split[-1]
         os.system('open dict://' + word)
 
-    
+
     elif cmd_split[0] == 'set':
       # Set the volume or brightness.
 
@@ -110,7 +95,7 @@ def process_cmd():
         else:
           os.system('brightness ' + brightness[1:])
 
-    
+
     elif (cmd_split[0] == 'how') or (cmd_split[0] == 'who'):
       # Generic questions, ask google.
 
@@ -135,11 +120,22 @@ def process_cmd():
       # Pause movie or music.
 
       os.system(""" osascript -e 'tell application "iTunes" to pause' """)
-      
-    
-    return 'success'
-  else:
-    print 'this is get request'
+
+    return "success"
+
+@app.route("/", methods=['POST'])
+def process_cmd():
+
+    # Get the command.
+    get_cmd = request.get_data()
+
+    cmd = json.loads(get_cmd)['cmd'].strip()
+    print cmd
+
+    cmd_split = cmd.split(' ')
+    print cmd_split
+
+    return __process_command__(cmd_split)
 
 if __name__ == "__main__":
   app.run(debug=True)
