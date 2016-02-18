@@ -17,6 +17,12 @@ hello_msgs = ['hi', 'hey', 'yup', 'yes', 'hello', 'yes boss']
 
 cors = CORS(app, resources={r"/": {"origins": "localhost"}})
 
+
+def ask_google(cmd):
+  os.system('say -v samantha "Asking Google"')
+  search_string = urllib2.quote(cmd)
+  os.system('open "http://google.com/search?q=' + search_string + '"')
+
 @app.route("/", methods=['POST'])
 def process_cmd():
   
@@ -32,20 +38,10 @@ def process_cmd():
     print cmd_split
 
     
-    def ask_google(cmd):
-      os.system('say -v samantha "Asking Google"')
-
-      search_string = urllib2.quote(cmd)
-      os.system('open "http://google.com/search?q=' + search_string + '"')
-
-    
-    if (cmd_split[0] == 'heera') or (cmd_split[0] == 'veera')\
-      or (cmd_split[0] == 'error') or (cmd_split[0] == 'ara')\
-      or (cmd_split[0] == 'aura') or (cmd_split[0] == 'horror')\
-      or (cmd_split[0] == 'arav') or (cmd_split[0] == 'aarav')\
-      or (cmd_split[0] == 'tera'):
+    if cmd_split[0] in ['heera', 'veera', 'error', 'ara',\
+                        'aura', 'horror', 'arav', 'aarav',\
+                        'tera']:
       # Call its name
-
       os.system('say -v samantha "' + random.choice(hello_msgs) + '"')
 
     
